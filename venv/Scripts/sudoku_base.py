@@ -28,25 +28,11 @@ class Sudoku(Base):
     #     return None
 
 
-engine = create_engine('sqlite:///:memory:', echo=True)
+engine = create_engine('sqlite:///:memory:')  # , echo=True)
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
 
-
-# sesja = Session()
-#
-# s = Sudoku(board = "123456789888", creator = "user")
-# s2 = Sudoku(board = "12345", creator = "user")
-# sesja.add_all([s, s2])
-# sesja.commit()
-
-
-# for i in sesja.query(Sudoku).filter(Sudoku.id == 1):
-#     print(i.board + i.creator)
-
-# sesja.rollback()
-# sesja.close()
 
 def print_all_sudoku():
     sesja = Session()
@@ -92,8 +78,25 @@ def return_array_sudoku(index):  # return sudoku witch id index, convert string 
     return sudoku_array
 
 
+sudoku1 = [[0, 1, 0, 6, 0, 4, 3, 0, 7],
+           [3, 5, 6, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 5, 3, 6, 9, 0],
+           [0, 8, 3, 2, 6, 0, 4, 0, 9],
+           [0, 0, 0, 0, 0, 0, 0, 0, 0],
+           [4, 0, 5, 0, 7, 8, 2, 6, 0],
+           [0, 4, 2, 5, 3, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 7, 2, 4],
+           [7, 0, 9, 4, 0, 2, 0, 8, 0]]
+sudoku2 = [[0, 1, 0, 0, 5, 6, 2, 7, 0],
+           [0, 0, 0, 0, 8, 0, 0, 0, 9],
+           [0, 7, 8, 0, 0, 3, 6, 0, 5],
+           [0, 0, 0, 0, 0, 4, 5, 0, 1],
+           [8, 5, 2, 0, 0, 0, 7, 3, 4],
+           [6, 0, 1, 7, 0, 0, 0, 0, 0],
+           [1, 0, 6, 4, 0, 0, 9, 5, 0],
+           [3, 0, 0, 0, 6, 0, 0, 0, 0],
+           [0, 2, 7, 3, 9, 0, 0, 8, 0]]
 
-add_sudoku([[1, 2], [3, 4]], "u")
-# add_sudoku(return_array_sudoku(1), "u")
+add_sudoku(sudoku1, "default")
+add_sudoku(sudoku2, "default")
 
-print_all_sudoku()

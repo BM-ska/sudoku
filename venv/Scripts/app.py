@@ -1,10 +1,10 @@
 import tkinter
 import tkinter as tk
 import random
-import sudoku as su
+import sudoku_base as sdb
 
 
-class RozwiazanieSudoku:
+class SudokuSolution:
 
     def __init__(self, sudoku):
         self.sudoku = sudoku
@@ -138,7 +138,7 @@ class Interface(tk.Frame):
                     else:
                         self.sudoku_solution[x][y] = int(self.sudoku[y][x].get())
 
-        s = RozwiazanieSudoku(self.sudoku_solution)
+        s = SudokuSolution(self.sudoku_solution)
         s.solve()
         self.sudoku_solution = s.sudoku
 
@@ -197,34 +197,15 @@ class Interface(tk.Frame):
         self.unlock_sudoku()
         self.clean_sudoku()
 
-        sudoku1 = [[0, 1, 0, 6, 0, 4, 3, 0, 7],
-                   [3, 5, 6, 0, 0, 0, 0, 0, 0],
-                   [0, 0, 0, 0, 5, 3, 6, 9, 0],
-                   [0, 8, 3, 2, 6, 0, 4, 0, 9],
-                   [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                   [4, 0, 5, 0, 7, 8, 2, 6, 0],
-                   [0, 4, 2, 5, 3, 0, 0, 0, 0],
-                   [0, 0, 0, 0, 0, 0, 7, 2, 4],
-                   [7, 0, 9, 4, 0, 2, 0, 8, 0]]
-        sudoku2 = [[0, 1, 0, 0, 5, 6, 2, 7, 0],
-                   [0, 0, 0, 0, 8, 0, 0, 0, 9],
-                   [0, 7, 8, 0, 0, 3, 6, 0, 5],
-                   [0, 0, 0, 0, 0, 4, 5, 0, 1],
-                   [8, 5, 2, 0, 0, 0, 7, 3, 4],
-                   [6, 0, 1, 7, 0, 0, 0, 0, 0],
-                   [1, 0, 6, 4, 0, 0, 9, 5, 0],
-                   [3, 0, 0, 0, 6, 0, 0, 0, 0],
-                   [0, 2, 7, 3, 9, 0, 0, 8, 0]]
-
-        all_sudoku = [sudoku1, sudoku2]
-        numer = random.randint(0, 1)
+        numer = random.randint(0, 1) + 1
+        s = sdb.return_array_sudoku(numer)
 
         self.clean_sudoku()
 
         for i in range(9):
             for j in range(9):
-                if all_sudoku[numer][i][j] != 0:
-                    self.sudoku[j][i].insert(0, all_sudoku[numer][i][j])
+                if s[i][j] != 0:
+                    self.sudoku[j][i].insert(0, s[i][j])
                     self.sudoku[j][i].config(state='readonly')
 
         self.is_generated = True
@@ -277,4 +258,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
