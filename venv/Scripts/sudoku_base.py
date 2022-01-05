@@ -1,4 +1,3 @@
-
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Table, Column, Integer, ForeignKey, String, DateTime, select
 from sqlalchemy import create_engine
@@ -8,11 +7,12 @@ import re
 
 Base = declarative_base()
 
+
 class Sudoku(Base):
     __tablename__ = 'Sudoku'
 
-    id = Column(Integer, primary_key = True)
-    board = Column(String(81), nullable = False)
+    id = Column(Integer, primary_key=True)
+    board = Column(String(81), nullable=False)
     creator = Column(String)
 
     # @validates('board')
@@ -32,27 +32,47 @@ engine = create_engine('sqlite:///:memory:', echo=True)
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
-sesja = Session()
 
-s = Sudoku(board = "123456789888", creator = "user")
-s2 = Sudoku(board = "12345", creator = "user")
-sesja.add_all([s, s2])
-sesja.commit()
 
-for i in sesja.query(Sudoku).all():
-   print(i.board + i.creator)
+# sesja = Session()
+#
+# s = Sudoku(board = "123456789888", creator = "user")
+# s2 = Sudoku(board = "12345", creator = "user")
+# sesja.add_all([s, s2])
+# sesja.commit()
+
 
 # for i in sesja.query(Sudoku).filter(Sudoku.id == 1):
 #     print(i.board + i.creator)
 
-#sesja.rollback()
-sesja.close()
+# sesja.rollback()
+# sesja.close()
 
-def add_sudoku(s, creator): # add sudoku to table, convert array to string
+def print_all_sudoku():
+    sesja = Session()
+
+    for i in sesja.query(Sudoku).all():
+        print(i.id, " ", i.board, " ", i.creator)
+
+    sesja.close()
+
+
+def add_sudoku(s, creator):  # add sudoku to table, convert array to string
     sudoku_string = ""
+    sesja = Session()
+
+    for i in s:
+        for j in i:
+            sudoku_string += str(j)
+
+    new_sudoku = Sudoku(board=sudoku_string, creator=creator)
+    sesja.add(new_sudoku)
+    sesja.commit()
+
+    sesja.close()
 
 
-def return_sudoku(index): # return sudoku witch id index, convert string to array
+def return_array_sudoku(index):  # return sudoku witch id index, convert string to array
     sesja = Session()
 
     for i in sesja.query(Sudoku).filter(Sudoku.id == index).limit(1):
@@ -60,7 +80,7 @@ def return_sudoku(index): # return sudoku witch id index, convert string to arra
 
     sudoku_array = [[0 for x in range(9)] for y in range(9)]
     j = -1
-    for l in range (len(sudoku_string)):
+    for l in range(len(sudoku_string)):
 
         i = l % 9
         if l % 9 == 0:
@@ -71,4 +91,9 @@ def return_sudoku(index): # return sudoku witch id index, convert string to arra
 
     return sudoku_array
 
-return_sudoku(1)
+
+
+add_sudoku([[1, 2], [3, 4]], "u")
+# add_sudoku(return_array_sudoku(1), "u")
+
+print_all_sudoku()
