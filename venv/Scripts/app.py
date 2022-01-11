@@ -5,6 +5,7 @@ import sudoku_base as sdb
 
 
 class SudokuSolution:
+    # Obiekt klasy to tablica sudoku
 
     def __init__(self, sudoku):
         self.sudoku = sudoku
@@ -30,7 +31,9 @@ class SudokuSolution:
 
         print(diagram)
 
-    def if_possible(self, s, row, column, val):  # czy mozna wstawic liczbe na miejsce
+    def if_possible(self, s, row, column, val):
+        # czy mozna wstawic liczbe na miejsce
+
         start_column = column - (column % 3)
         start_row = row - (row % 3)
 
@@ -40,13 +43,17 @@ class SudokuSolution:
 
         return 1
 
-    def find_number(self, s, row, column):  # znajdz prawidlowa liczbe
+    def find_number(self, s, row, column):
+        # znajdz prawidlowa liczbe
+
         for i in range(1, 10):
             if self.if_possible(s, row, column, i):
                 return i
         return
 
-    def if_only_one_number(self, s, row, column):  # czy tylko jedna prawidlowa liczba pasuje
+    def if_only_one_number(self, s, row, column):
+        # czy tylko jedna prawidlowa liczba pasuje
+
         correct_number = 0
         for i in range(1, 10):
             if self.if_possible(s, row, column, i):
@@ -58,7 +65,9 @@ class SudokuSolution:
             return 0
         return 1
 
-    def s(self):  # rozwiaz
+    def s(self):
+        # rozwiaz
+
         s = self.sudoku
         for i in range(81):
             for j in range(81):
@@ -68,6 +77,7 @@ class SudokuSolution:
         self.sudoku = s
 
     def solve(self):
+        # funkcja do rozwiazywania sudoku
         self.s()
 
         for i in range(9):
@@ -77,6 +87,8 @@ class SudokuSolution:
 
 
 class Message:
+    # wiadomosc do wyswietlania
+
     def __init__(self, option):
         if option == "start":
             self.text = "start the game"
@@ -191,13 +203,13 @@ class Interface(tk.Frame):
         self.is_generated = False
 
     def button_generate_click(self):
-        # kiedys - sudoku z plikow
 
         self.text_message.set(Message('generate').text)
         self.unlock_sudoku()
         self.clean_sudoku()
 
-        numer = random.randint(0, 1) + 1
+        number_of_sudoku = sdb.get_number_of_sudoku()
+        numer = random.randint(1, number_of_sudoku )
         s = sdb.return_array_sudoku(numer)
 
         self.clean_sudoku()
