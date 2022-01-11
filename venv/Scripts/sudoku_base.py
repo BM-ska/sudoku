@@ -16,7 +16,7 @@ class Sudoku(Base):
     creator = Column(String)
 
 
-engine = create_engine('sqlite:///:memory:')  # , echo=True)
+engine = create_engine('sqlite:///:memory:')
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
@@ -30,8 +30,9 @@ def print_all_sudoku():
 
     sesja.close()
 
+
 def convert_sudoku_to_string(s):
-    #convert array to string
+    # convert array to string
     sudoku_string = ""
 
     for i in s:
@@ -40,12 +41,14 @@ def convert_sudoku_to_string(s):
 
     return sudoku_string
 
+
 def add_sudoku(s, creator):
     # add sudoku to table
 
     sudoku_string = convert_sudoku_to_string(s)
 
-    # czy sudoku_string jest dobrze zrobione
+    if not (bool(re.match(r'^\d{81}$', sudoku_string))):
+        raise ValueError("sudoku format not corrected")
 
     sesja = Session()
 
@@ -55,19 +58,26 @@ def add_sudoku(s, creator):
 
     sesja.close()
 
+
 def select_index(index):
-# return sudoku witch id index
+    # return sudoku witch id index
     sesja = Session()
     sudoku_string = ""
     for i in sesja.query(Sudoku).filter(Sudoku.id == index).limit(1):
         sudoku_string = i.board
 
     sesja.close()
-    print(sudoku_string)
     return sudoku_string
+
 
 def return_array_sudoku(index):
     #  convert string to array
+
+    if (type(index) != int):
+        raise ValueError("index must be of type int ")
+
+    if (index > get_number_of_sudoku()):
+        raise ValueError("id outside the base")
 
     s_string = select_index(index)
     sudoku_array = [[0 for x in range(9)] for y in range(9)]
@@ -82,6 +92,7 @@ def return_array_sudoku(index):
 
     return sudoku_array
 
+
 def get_number_of_sudoku():
     # return returns the number of sudoku in the database
 
@@ -90,7 +101,6 @@ def get_number_of_sudoku():
     sesja.close()
 
     return number
-
 
 
 sudoku1 = [[0, 1, 0, 6, 0, 4, 3, 0, 7],
