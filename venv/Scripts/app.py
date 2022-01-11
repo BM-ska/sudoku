@@ -209,7 +209,7 @@ class Interface(tk.Frame):
         self.clean_sudoku()
 
         number_of_sudoku = sdb.get_number_of_sudoku()
-        numer = random.randint(1, number_of_sudoku )
+        numer = random.randint(1, number_of_sudoku)
         s = sdb.return_array_sudoku(numer)
 
         self.clean_sudoku()
