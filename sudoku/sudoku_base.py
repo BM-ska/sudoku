@@ -1,7 +1,6 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Table, Column, Integer, ForeignKey, String, DateTime, select
+from sqlalchemy import Column, Integer, String
 from sqlalchemy import create_engine, func
-from sqlalchemy.orm import validates
 from sqlalchemy.orm import sessionmaker
 import re
 
@@ -73,22 +72,22 @@ def select_index(index):
 def return_array_sudoku(index):
     #  convert string to array
 
-    if (type(index) != int):
+    if type(index) != int:
         raise ValueError("index must be of type int ")
 
-    if (index > get_number_of_sudoku()):
+    if index > get_number_of_sudoku():
         raise ValueError("id outside the base")
 
     s_string = select_index(index)
-    sudoku_array = [[0 for x in range(9)] for y in range(9)]
+    sudoku_array = [[0 for _ in range(9)] for _ in range(9)]
     j = -1
-    for l in range(len(s_string)):
+    for field in range(len(s_string)):
 
-        i = l % 9
-        if l % 9 == 0:
+        i = field % 9
+        if field % 9 == 0:
             j += 1
 
-        sudoku_array[j][i] = int(s_string[l])
+        sudoku_array[j][i] = int(s_string[field])
 
     return sudoku_array
 

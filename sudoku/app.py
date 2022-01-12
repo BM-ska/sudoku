@@ -1,4 +1,3 @@
-import tkinter
 import tkinter as tk
 import random
 import sudoku.sudoku_base as sdb
@@ -38,7 +37,8 @@ class SudokuSolution:
         start_row = row - (row % 3)
 
         for i in range(9):
-            if val == s[row][i] or val == s[i][column] or val == s[start_row + i % 3][start_column + i // 3]:
+            if val == s[row][i] or val == s[i][column] or \
+                    val == s[start_row + i % 3][start_column + i // 3]:
                 return 0
 
         return 1
@@ -121,15 +121,19 @@ class Interface(tk.Frame):
         self.text_message = tk.StringVar()
         self.text_message.set(Message('start').text)
 
-        self.label_message = tk.Label(self.window, textvariable=self.text_message)
-        self.label_message.grid(row=0, column=1, padx=self.padding, pady=self.padding)
+        self.label_message = tk.Label(self.window,
+                                      textvariable=self.text_message)
+        self.label_message.grid(row=0, column=1, padx=self.padding,
+                                pady=self.padding)
 
         self.frame_sudoku = tk.Frame(self.window)
         self.frame_buttons = tk.Frame(self.window)
 
-        self.sudoku = [[tk.Entry(self.frame_sudoku, width=3) for x in range(9)] for y in range(9)]
+        self.sudoku = [[tk.Entry(self.frame_sudoku, width=3)
+                        for x in range(9)] for y in range(9)]
         self.sudoku_solution = [[0 for x in range(9)] for y in range(9)]
-        self.generated_sudoku = [[tk.Entry(self.frame_sudoku, width=3) for x in range(9)] for y in range(9)]
+        self.generated_sudoku = [[tk.Entry(self.frame_sudoku, width=3)
+                                  for x in range(9)] for y in range(9)]
         self.is_generated = False
 
     def update_sudoku_solution(self):
@@ -140,7 +144,8 @@ class Interface(tk.Frame):
                     if self.generated_sudoku[y][x].get() == '':
                         self.sudoku_solution[x][y] = 0
                     else:
-                        self.sudoku_solution[x][y] = int(self.generated_sudoku[y][x].get())
+                        self.sudoku_solution[x][y] = \
+                            int(self.generated_sudoku[y][x].get())
 
         else:
             for x in range(9):
@@ -148,7 +153,8 @@ class Interface(tk.Frame):
                     if self.sudoku[y][x].get() == '':
                         self.sudoku_solution[x][y] = 0
                     else:
-                        self.sudoku_solution[x][y] = int(self.sudoku[y][x].get())
+                        self.sudoku_solution[x][y] = \
+                            int(self.sudoku[y][x].get())
 
         s = SudokuSolution(self.sudoku_solution)
         s.solve()
@@ -162,18 +168,27 @@ class Interface(tk.Frame):
 
     def option_buttons(self):
 
-        self.frame_buttons.grid(row=1, column=0, padx=self.padding, pady=self.padding)
+        self.frame_buttons.grid(row=1, column=0, padx=self.padding,
+                                pady=self.padding)
 
-        clean = tk.Button(self.frame_buttons, command=self.button_clean_click, text="clean", width=20)
+        clean = tk.Button(self.frame_buttons,
+                          command=self.button_clean_click,
+                          text="clean", width=20)
         clean.grid(row=0, column=0, padx=self.padding, pady=self.padding)
 
-        generate = tk.Button(self.frame_buttons, command=self.button_generate_click, text="generate", width=20)
+        generate = tk.Button(self.frame_buttons,
+                             command=self.button_generate_click,
+                             text="generate", width=20)
         generate.grid(row=1, column=0, padx=self.padding, pady=self.padding)
 
-        check = tk.Button(self.frame_buttons, command=self.button_check_click, text="check", width=20)
+        check = tk.Button(self.frame_buttons,
+                          command=self.button_check_click,
+                          text="check", width=20)
         check.grid(row=2, column=0, padx=self.padding, pady=self.padding)
 
-        answer = tk.Button(self.frame_buttons, command=self.button_answer_click, text="show answer", width=20)
+        answer = tk.Button(self.frame_buttons,
+                           command=self.button_answer_click,
+                           text="show answer", width=20)
         answer.grid(row=3, column=0, padx=self.padding, pady=self.padding)
 
     def unlock_sudoku(self):
@@ -192,7 +207,8 @@ class Interface(tk.Frame):
         for i in range(9):
             for j in range(9):
                 if self.sudoku[j][i].get() != '':
-                    if int(self.sudoku[j][i].get()) != self.sudoku_solution[i][j]:
+                    if int(self.sudoku[j][i].get()) != \
+                            self.sudoku_solution[i][j]:
                         return False
         return True
 
@@ -248,19 +264,22 @@ class Interface(tk.Frame):
                     self.sudoku[j][i].insert(0, self.sudoku_solution[i][j])
 
     def sudoku_interface(self):
-        self.frame_sudoku.grid(row=1, column=1, padx=self.padding, pady=self.padding)
+        self.frame_sudoku.grid(row=1, column=1, padx=self.padding,
+                               pady=self.padding)
 
         for i in range(9):
             for j in range(9):
-                # self.sudoku[i][j].insert(0, i)
 
-                self.sudoku[i][j].grid(column=i, row=j, padx=self.padding, pady=self.padding)
+                self.sudoku[i][j].grid(column=i, row=j, padx=self.padding,
+                                       pady=self.padding)
 
                 if j == 3 or j == 6:
-                    self.sudoku[i][j].grid(pady=(self.padding + 15, self.padding))
+                    self.sudoku[i][j].grid(pady=(self.padding + 15,
+                                                 self.padding))
 
                 if i == 3 or i == 6:
-                    self.sudoku[i][j].grid(padx=(self.padding + 15, self.padding))
+                    self.sudoku[i][j].grid(padx=(self.padding + 15,
+                                                 self.padding))
 
 
 def main():
