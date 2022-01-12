@@ -1,7 +1,7 @@
 import tkinter
 import tkinter as tk
 import random
-import sudoku_base as sdb
+import sudoku.sudoku_base as sdb
 
 
 class SudokuSolution:
@@ -100,7 +100,7 @@ class Message:
             self.text = "there are no mistakes"
 
         elif option == "check_f":
-            self.text = "not correctly"
+            self.text = "incorrect"
 
         elif option == "generate":
             self.text = "new sudoku"

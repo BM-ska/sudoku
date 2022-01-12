@@ -1,5 +1,6 @@
 import unittest
-import app, sudoku_base
+import sudoku.app
+import sudoku.sudoku_base
 
 sudoku = [[9, 8, 0, 0, 0, 2, 3, 0, 0],
           [0, 0, 3, 5, 4, 9, 0, 7, 0],
